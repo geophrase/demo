@@ -1,66 +1,72 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import Button from '@mui/material/Button';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import Image from 'next/image';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import tonedMilkImg from '@/assets/toned-milk.png';
+import wheatFlourImg from '@/assets/wheat-flour.png';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Demo Store
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+
+        <Stack direction="row" spacing={2} sx={{ mt: 4, justifyContent: "center" }}>
+          <Card sx={{ pb: 2 }}>
             <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+                src={tonedMilkImg}
+                height={160}
+                alt="Toned Milk 1L"
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography>Toned Milk 1L</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>₹40</Typography>
+            </CardContent>
+            <CardActions sx={{ justifyContent: "center" }}>
+              <Button variant="outlined" startIcon={<AddShoppingCartIcon />}>
+                Add
+              </Button>
+            </CardActions>
+          </Card>
+          <Card>
+            <Image
+                src={wheatFlourImg}
+                height={160}
+                alt="Wheat Flour 5kg"
+            />
+            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography>Wheat Flour 5kg</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>₹200</Typography>
+            </CardContent>
+            <CardActions sx={{ justifyContent: "center" }}>
+              <Button variant="outlined" startIcon={<AddShoppingCartIcon />}>
+                Add
+              </Button>
+            </CardActions>
+          </Card>
+        </Stack>
+
+        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+          <Button variant="contained" startIcon={<ShoppingCartIcon />}>
+            Go to cart
+          </Button>
+        </Box>
+      </Box>
   );
 }
