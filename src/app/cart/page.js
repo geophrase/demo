@@ -10,6 +10,8 @@ import Image from 'next/image';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Button from '@mui/material/Button';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from "next/link";
@@ -20,6 +22,10 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 export default function Cart() {
     const { cartItems, toggleCartItem } = useContext(CartContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const theme = useTheme();
+    const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+        defaultMatches: true,
+    });
 
     useEffect(() => {
         async function checkIfLoggedIn() {
@@ -82,7 +88,7 @@ export default function Cart() {
                     >Go back to shopping</Button>
                 </> : <>
                     {cartItems.map(item => (
-                        <Card sx={{minWidth: '95%', mt: 1, border: 0.5, borderColor: '#cccccc'}} key={item.id}
+                        <Card sx={{minWidth: isMd ? '40%' : '95%', mt: 1, border: 0.5, borderColor: '#cccccc'}} key={item.id}
                               elevation={0}>
                             <CardContent>
                                 <Stack direction="row" sx={{alignItems: "center", justifyContent: "space-between"}}>
