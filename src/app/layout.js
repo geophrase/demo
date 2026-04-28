@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import CssBaseline from "@mui/material/CssBaseline";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import ThemeRegistry from "@/components/ThemeRegistry";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,10 +21,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body>
-        <CssBaseline />
-        <CartProvider>{children}</CartProvider>
+        <InitColorSchemeScript defaultMode="system" />
+          <ThemeRegistry>
+            <CartProvider>{children}</CartProvider>
+          </ThemeRegistry>
       </body>
     </html>
   );
