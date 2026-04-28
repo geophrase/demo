@@ -1,0 +1,15 @@
+services:
+  next:
+    image: asia-south1-docker.pkg.dev/geophrase/demo/nextjs:${IMAGE_TAG:-latest}
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    command: node server.js
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+    ports:
+      - "127.0.0.1:3002:3000"
