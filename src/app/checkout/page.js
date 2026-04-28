@@ -15,6 +15,7 @@ import {useRouter} from "next/navigation";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import CustomListItemText from "@/components/CustomListItemText";
+import {GEOPHRASE_API_KEY} from "@/constants/constants";
 
 
 export default function Checkout() {
@@ -24,7 +25,7 @@ export default function Checkout() {
     const router = useRouter();
 
     const { open } = useGeophrase({
-        key: 'YOUR_API_KEY',
+        key: GEOPHRASE_API_KEY,
         phone: typeof window !== 'undefined' ? localStorage.getItem("loginPhone") : null,
         onSuccess: result => {
             setAddress(result);

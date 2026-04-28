@@ -15,3 +15,5 @@ export const shoppingItems = [
     image: wheatFlourImg,
   },
 ];
+
+export const GEOPHRASE_API_KEY = process.env.NEXT_PUBLIC_GEOPHRASE_API_KEY;
