@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import Link from 'next/link'
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -70,13 +71,15 @@ export default function Home() {
         </Stack>
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-          <Button
-              variant="contained"
-              startIcon={<ShoppingCartIcon />}
-              disabled={cartItems.length === 0}
-          >
-            Go to cart ({cartItems.length})
-          </Button>
+            <Button
+                component={Link}
+                href="/cart"
+                variant="contained"
+                startIcon={<ShoppingCartIcon />}
+                disabled={cartItems.length === 0}
+            >
+                Go to cart ({cartItems.length})
+            </Button>
         </Box>
       </Box>
   );
