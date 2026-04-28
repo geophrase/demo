@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Geophrase Demo Store
 
-## Getting Started
+A minimal Next.js 16 storefront demonstrating how to integrate [Geophrase](https://geophrase.com) for verified address collection at checkout.
 
-First, run the development server:
+The flow is intentionally small so the integration is easy to read:
+
+- **`/`** — product listing, add/remove items.
+- **`/cart`** — review items.
+- **`/login`** — collect a phone number (stored locally; no real OTP for the demo).
+- **`/checkout`** — opens the Geophrase widget via `useGeophrase`, displays the verified address on success.
+
+The Geophrase integration lives entirely in [src/app/checkout/page.js](src/app/checkout/page.js).
+
+## Prerequisites
+
+1. **Create a Geophrase business account** at [geophrase.com](https://geophrase.com).
+2. **Generate an API key** — follow the guide at [https://geophrase.com/docs/api-keys](https://geophrase.com/docs/api-keys).
+   - For local development, leave the key **unrestricted** (no origin allowlist) so `http://localhost:3000` can call the API.
+   - When you deploy, restrict the key to your production origin to prevent misuse.
+
+## Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file in the project root with your API key:
+
+```
+NEXT_PUBLIC_GEOPHRASE_API_KEY=your_api_key_here
+```
+
+The `NEXT_PUBLIC_` prefix exposes the variable to the browser, which is required because the Geophrase widget runs client-side.
+
+## Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## How the Geophrase integration works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In [src/app/checkout/page.js](src/app/checkout/page.js):
 
-## Learn More
+```js
+const { open } = useGeophrase({
+    key: GEOPHRASE_API_KEY,
+    theme: 'system',
+    phone,
+    onSuccess: (result) => { /* result contains the verified address */ },
+    onClose: () => router.push('/cart'),
+});
+```
 
-To learn more about Next.js, take a look at the following resources:
+- `key` — your API key.
+- `theme` — `'light'`, `'dark'`, or `'system'`. Passing this avoids a flash on first paint.
+- `phone` — pre-fills the widget if the user is already known.
+- `onSuccess` / `onClose` — callbacks for the merchant app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Call `open()` to launch the widget overlay.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project structure
 
-## Deploy on Vercel
+```
+src/
+├── app/
+│   ├── layout.js           # Root layout: theme, cart provider, color-scheme script
+│   ├── page.js             # Home / product listing
+│   ├── cart/page.js
+│   ├── checkout/page.js    # Geophrase integration
+│   └── login/page.js
+├── components/
+│   ├── Header.js           # Shared AppBar with login/logout
+│   ├── ThemeRegistry.js    # MUI ThemeProvider (client boundary)
+│   └── CustomListItemText.js
+├── context/
+│   └── CartContext.js
+├── hooks/
+│   └── useAuth.js          # localStorage-backed phone via useSyncExternalStore
+└── constants/constants.js
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Restrict the API key to your production origin in the Geophrase dashboard.
+- The app follows the system color scheme automatically. To add a manual toggle, use MUI's `useColorScheme()` hook.

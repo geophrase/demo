@@ -1,42 +1,38 @@
 'use client';
 
-import Typography from '@mui/material/Typography';
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useGeophrase } from '@geophrase/react';
-import {useContext, useEffect, useState} from "react";
+import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Button from '@mui/material/Button';
-import Link from "next/link";
-import {CartContext} from "@/context/CartContext";
-import {useRouter} from "next/navigation";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import CustomListItemText from "@/components/CustomListItemText";
-import {GEOPHRASE_API_KEY} from "@/constants/constants";
-
+import { CartContext } from '@/context/CartContext';
+import { useAuth } from '@/hooks/useAuth';
+import { GEOPHRASE_API_KEY } from '@/constants/constants';
+import CustomListItemText from '@/components/CustomListItemText';
+import Header from '@/components/Header';
 
 export default function Checkout() {
-    const [address, setAddress] = useState(null);
-    const { cartItems } = useContext(CartContext);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
+    const { cartItems } = useContext(CartContext);
+    const { phone, login } = useAuth();
+    const [address, setAddress] = useState(null);
 
     const { open } = useGeophrase({
         key: GEOPHRASE_API_KEY,
         theme: 'system',
-        phone: typeof window !== 'undefined' ? localStorage.getItem("loginPhone") : null,
-        onSuccess: result => {
+        phone,
+        onSuccess: (result) => {
             setAddress(result);
-            localStorage.setItem("loginPhone", result.verified_account_mobile_num);
-            setIsLoggedIn(true);
+            login(result.verified_account_mobile_num);
         },
-        onClose:  () => router.push('/cart')
+        onClose: () => router.push('/cart'),
     });
 
     useEffect(() => {
+        if (!GEOPHRASE_API_KEY) return;
         if (cartItems.length === 0) {
             router.push('/');
         } else {
@@ -44,9 +40,15 @@ export default function Checkout() {
         }
     }, [cartItems.length, open, router]);
 
-    const logout = () => {
-        localStorage.removeItem("loginPhone");
-        setIsLoggedIn(false);
+    if (!GEOPHRASE_API_KEY) {
+        return (
+            <Box sx={{ p: 4 }}>
+                <Typography variant="h6" gutterBottom>Missing API key</Typography>
+                <Typography>
+                    Set <code>NEXT_PUBLIC_GEOPHRASE_API_KEY</code> in your <code>.env</code> file. See README for setup.
+                </Typography>
+            </Box>
+        );
     }
 
     if (!address) {
@@ -54,38 +56,10 @@ export default function Checkout() {
     }
 
     return (
-        <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{mr: 2}}
-                        component={Link}
-                        href="/cart"
-                    >
-                        <ArrowBackIosIcon/>
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        Select Address
-                    </Typography>
-                    {isLoggedIn ? <Button
-                        color="inherit"
-                        onClick={logout}
-                    >
-                        Logout
-                    </Button> : <Button
-                        color="inherit"
-                        component={Link}
-                        href="/login"
-                    >
-                        Login
-                    </Button>}
-                </Toolbar>
-            </AppBar>
-            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2}}>
+        <Box sx={{ flexGrow: 1 }}>
+            <Header title="Select Address" backHref="/cart" />
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
                 <Typography>Successfully received address</Typography>
                 <List dense>
                     {Object.entries(address).map(([key, value]) => (
@@ -94,13 +68,10 @@ export default function Checkout() {
                         </ListItem>
                     ))}
                 </List>
-                <Button
-                    variant="contained"
-                    sx={{ mt: 2, mb: 4 }}
-                >
+                <Button variant="contained" sx={{ mt: 2 }}>
                     Proceed to make payment
                 </Button>
             </Box>
         </Box>
-    )
+    );
 }

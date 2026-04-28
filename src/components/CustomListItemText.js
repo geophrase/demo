@@ -1,12 +1,10 @@
-import ListItemText from "@mui/material/ListItemText";
-import * as React from "react";
+import ListItemText from '@mui/material/ListItemText';
 
-
-export default function CustomListItemText (props) {
+export default function CustomListItemText({ label, value }) {
     return (
         <ListItemText
-            secondary={props.value}
-            primary={props.label}
+            primary={label}
+            secondary={value}
             slotProps={{
                 primary: {
                     sx: { color: 'text.secondary' },
@@ -19,4 +17,4 @@ export default function CustomListItemText (props) {
             }}
         />
     );
-};
+}
