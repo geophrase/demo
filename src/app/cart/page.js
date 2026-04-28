@@ -1,6 +1,6 @@
 'use client';
 
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {CartContext} from '@/context/CartContext';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -19,6 +19,24 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function Cart() {
     const { cartItems, toggleCartItem } = useContext(CartContext);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        async function checkIfLoggedIn() {
+            const loginPhone = localStorage.getItem("loginPhone");
+            if (loginPhone) {
+                setIsLoggedIn(true);
+            }
+        }
+
+        checkIfLoggedIn().then(() => {
+        });
+    }, []);
+
+    const logout = () => {
+        localStorage.removeItem("loginPhone");
+        setIsLoggedIn(false);
+    }
 
     return (
         <Box sx={{flexGrow: 1}}>
@@ -38,7 +56,18 @@ export default function Cart() {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         Review Your Order
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn ? <Button
+                        color="inherit"
+                        onClick={logout}
+                    >
+                        Logout
+                    </Button> : <Button
+                        color="inherit"
+                        component={Link}
+                        href="/login"
+                    >
+                        Login
+                    </Button>}
                 </Toolbar>
             </AppBar>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -93,7 +122,7 @@ export default function Cart() {
                             variant="contained"
                             sx={{ mt: 4 }}
                         >
-                            Proceed to buy
+                            Select address
                         </Button>
                 </>}
             </Box>
