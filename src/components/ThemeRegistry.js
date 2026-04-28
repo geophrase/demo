@@ -4,7 +4,13 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 const theme = createTheme({
-  colorSchemes: { dark: true },
+  cssVariables: {
+    colorSchemeSelector: "data",
+  },
+  colorSchemes: {
+    light: true,
+    dark: true,
+  },
 });
 
 export default function ThemeRegistry({ children }) {

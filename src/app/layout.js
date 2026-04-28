@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import ThemeRegistry from "@/components/ThemeRegistry";
@@ -23,10 +24,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body>
-        <InitColorSchemeScript defaultMode="system" />
+        <InitColorSchemeScript attribute="data" defaultMode="system" />
+        <AppRouterCacheProvider>
           <ThemeRegistry>
             <CartProvider>{children}</CartProvider>
           </ThemeRegistry>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

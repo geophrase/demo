@@ -26,6 +26,7 @@ export default function Checkout() {
 
     const { open } = useGeophrase({
         key: GEOPHRASE_API_KEY,
+        theme: 'system',
         phone: typeof window !== 'undefined' ? localStorage.getItem("loginPhone") : null,
         onSuccess: result => {
             setAddress(result);
@@ -49,7 +50,7 @@ export default function Checkout() {
     }
 
     if (!address) {
-        return null;
+        return <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }} />;
     }
 
     return (
