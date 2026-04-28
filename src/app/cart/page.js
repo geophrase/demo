@@ -1,7 +1,7 @@
 'use client';
 
-import { useContext } from 'react';
-import { CartContext } from '@/context/CartContext';
+import {useContext} from 'react';
+import {CartContext} from '@/context/CartContext';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -18,64 +18,85 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function Cart() {
-  const { cartItems } = useContext(CartContext);
+    const { cartItems, toggleCartItem } = useContext(CartContext);
 
-  return (
-      <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-              <Toolbar>
-                  <IconButton
-                      size="large"
-                      edge="start"
-                      color="inherit"
-                      aria-label="menu"
-                      sx={{ mr: 2 }}
-                      component={Link}
-                      href="/"
-                  >
-                      <ArrowBackIosIcon />
-                  </IconButton>
-                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                      Review Your Order
-                  </Typography>
-                  <Button color="inherit">Login</Button>
-              </Toolbar>
-          </AppBar>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
-              {cartItems.length === 0 ? <>
-                  <Typography>Your cart is empty.</Typography>
-                  <Button
-                      component={Link}
-                      href="/"
-                      variant="contained"
-                      sx={{ mt: 2 }}
-                      startIcon={<ShoppingCartIcon />}
-                  >Go back to shopping</Button>
-              </> : <>
-              {cartItems.map(item => (
-                  <Card sx={{ minWidth: '90%' }} key={item.id}>
-                      <CardContent>
-                          <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
-                              <Image src={item.image} height={64} alt={item.name} />
-                              <Stack>
-                                  <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                      Word of the Day
-                                  </Typography>
-                                  <Typography variant="h5" component="div">
-                                      dfdf
-                                  </Typography>
-                              </Stack>
-                              <Button
-                                  variant="outlined"
-                                  size="small"
-                                  startIcon={<RemoveShoppingCartIcon />}
-                              >Remove</Button>
-                          </Stack>
-                      </CardContent>
-                  </Card>
-              ))}
-              </>}
-          </Box>
-      </Box>
-  );
+    return (
+        <Box sx={{flexGrow: 1}}>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}
+                        component={Link}
+                        href="/"
+                    >
+                        <ArrowBackIosIcon/>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        Review Your Order
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                {cartItems.length === 0 ? <>
+                    <Typography sx={{mt: 4}}>Your cart is empty.</Typography>
+                    <Button
+                        component={Link}
+                        href="/"
+                        variant="contained"
+                        sx={{mt: 2}}
+                        startIcon={<ShoppingCartIcon/>}
+                    >Go back to shopping</Button>
+                </> : <>
+                    {cartItems.map(item => (
+                        <Card sx={{minWidth: '95%', mt: 1, border: 0.5, borderColor: '#cccccc'}} key={item.id}
+                              elevation={0}>
+                            <CardContent>
+                                <Stack direction="row" sx={{alignItems: "center", justifyContent: "space-between"}}>
+                                    <Image src={item.image} height={64} alt={item.name}/>
+                                    <Stack>
+                                        <Typography variant="body2">
+                                            {item.name}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{color: 'text.secondary'}}>
+                                            Price: ₹{item.price}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{color: 'text.secondary'}}>
+                                            Quantity: 1
+                                        </Typography>
+                                    </Stack>
+                                    <Button
+                                        variant="outlined"
+                                        size="small"
+                                        startIcon={<RemoveShoppingCartIcon/>}
+                                        onClick={() => toggleCartItem(item)}
+                                    >Remove</Button>
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                    ))}
+                    <Stack direction="row" sx={{mt: 4, alignItems: 'center'}}>
+                        <Typography>
+                            Total amount for {cartItems.length} item{cartItems.length > 0 ? 's' : ''}:&nbsp;
+                        </Typography>
+                        <Typography variant="h6">
+                            ₹{cartItems.reduce((sum, item) => sum + item.price, 0)}
+                        </Typography>
+                    </Stack>
+                        <Button
+                            component={Link}
+                            href="/checkout"
+                            variant="contained"
+                            sx={{ mt: 4 }}
+                        >
+                            Proceed to buy
+                        </Button>
+                </>}
+            </Box>
+        </Box>
+    );
 }
