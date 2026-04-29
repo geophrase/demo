@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { CartProvider } from '@/context/CartContext';
 import ThemeRegistry from '@/components/ThemeRegistry';
 import Footer from '@/components/Footer';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
                     </ThemeRegistry>
                 </AppRouterCacheProvider>
             </body>
+            <GoogleAnalytics gaId="G-P1K735FXE0" />
         </html>
     );
 }
