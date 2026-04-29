@@ -16,8 +16,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+    metadataBase: new URL('https://demo.geophrase.com'),
     title: 'Geophrase Demo Store',
-    description: 'A minimal Next.js storefront demonstrating Geophrase address verification.',
+    description: 'A minimal Next.js storefront demonstrating Geophrase address collection.',
+    icons: {
+        icon: '/favicon.svg',
+        apple: '/apple-icon.png',
+    },
 };
 
 export default function RootLayout({ children }) {
