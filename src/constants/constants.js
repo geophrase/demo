@@ -1,5 +1,5 @@
-import tonedMilkImg from '@/assets/toned-milk.png';
-import wheatFlourImg from '@/assets/wheat-flour.png';
+import tonedMilkImg from '@/assets/toned-milk.jpg';
+import wheatFlourImg from '@/assets/wheat-flour.jpg';
 
 export const shoppingItems = [
   {
