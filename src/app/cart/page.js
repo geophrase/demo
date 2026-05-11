@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import Link from 'next/link';
+import Alert from '@mui/material/Alert';
 import Header from '@/components/Header';
 
 export default function Cart() {
@@ -91,6 +92,8 @@ export default function Cart() {
                         >
                             Select address
                         </Button>
+
+                        <Alert severity="info" sx={{ mt: 2, mx: 2 }}>Clicking above button will trigger the Geophrase Connect widget using the Geophrase SDK.</Alert>
                     </>
                 )}
             </Box>

@@ -6,13 +6,11 @@ import { useGeophrase } from '@geophrase/react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import { CartContext } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { GEOPHRASE_API_KEY } from '@/constants/constants';
-import CustomListItemText from '@/components/CustomListItemText';
 import Header from '@/components/Header';
+import CodeBlock from "@/components/CodeBlock";
 
 export default function Checkout() {
     const router = useRouter();
@@ -26,7 +24,7 @@ export default function Checkout() {
         phone,
         onSuccess: (result) => {
             setAddress(result);
-            login(result.verified_account_mobile_num);
+            login(result.address.verified_mobile_num);
         },
         onClose: () => router.push('/cart'),
     });
@@ -59,16 +57,14 @@ export default function Checkout() {
         <Box sx={{ flexGrow: 1 }}>
             <Header title="Select Address" backHref="/cart" />
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
-                <Typography>Successfully received address</Typography>
-                <List dense>
-                    {Object.entries(address).map(([key, value]) => (
-                        <ListItem key={key}>
-                            <CustomListItemText label={key} value={value} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Button variant="contained" sx={{ mt: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2, mx: 2 }}>
+                <Typography>Geophrase Connect widget successfully handed over address to your application.</Typography>
+
+                <Box sx={{ width: "100%" }}>
+                    <CodeBlock codeString={JSON.stringify(address, null, 2)} language="JavaScript" />
+                </Box>
+
+                <Button variant="contained" sx={{ mt: 4 }}>
                     Proceed to make payment
                 </Button>
             </Box>
