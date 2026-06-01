@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { CartContext } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
-import { GEOPHRASE_API_KEY } from '@/constants/constants';
+import {GEOPHRASE_API_KEY, GEOPHRASE_API_KEY_ID} from '@/constants/constants';
 import Header from '@/components/Header';
 import CodeBlock from "@/components/CodeBlock";
 
@@ -19,6 +19,7 @@ export default function Checkout() {
     const [address, setAddress] = useState(null);
 
     const { open } = useGeophrase({
+        keyId: GEOPHRASE_API_KEY_ID,
         key: GEOPHRASE_API_KEY,
         theme: 'system',
         phone,

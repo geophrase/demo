@@ -16,4 +16,5 @@ export const shoppingItems = [
   },
 ];
 
+export const GEOPHRASE_API_KEY_ID = '5p9ir4zv';
 export const GEOPHRASE_API_KEY = process.env.NEXT_PUBLIC_GEOPHRASE_API_KEY;
