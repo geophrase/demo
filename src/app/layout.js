@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
                     </ThemeRegistry>
                 </AppRouterCacheProvider>
             </body>
-            <GoogleAnalytics gaId="G-P1K735FXE0" />
+            {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-P1K735FXE0" />}
         </html>
     );
 }
