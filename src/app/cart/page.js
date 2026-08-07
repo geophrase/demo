@@ -23,7 +23,7 @@ export default function Cart() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Header title="Review Your Order" backHref="/" />
+            <Header title="Review your order" backHref="/" />
 
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 {cartItems.length === 0 ? (
